@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare,User } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import AuthImagePattern from '../components/AuthImagePattern';
 
 function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -124,13 +125,20 @@ function SignupPage() {
             </button>
           </form>
           <div className='text-center'>
-            <p className='text-base-content/60 '>Already have an account? <Link href="/login" className='text-primary'>
-            Login
-            </Link>
+            <p className='text-base-content/60 '>Already have an account? 
+              <Link to="/login" className='text-primary'>
+                Login
+              </Link>
             </p>
           </div>
         </div>
       </div>
+
+      {/* right */}
+      <AuthImagePattern
+        title="Sign up"
+        subtitle="Connect with friends and the world around you on Messenger."
+      />
     </div>
   )
 }
