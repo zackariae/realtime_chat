@@ -1,36 +1,46 @@
+import { Link } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore"
+import { LogOut, MessageSquare, Settings, User } from "lucide-react";
 
 function Navbar() {
+  const {logout, authUser} = useAuthStore();
+
   return (
-    <div className="navbar bg-base-100 shadow-sm">
-    <div className="navbar-start">
-      <div className="dropdown">
-        <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+    <header className="bg-base-100 border-b border=base-300 fixed w-full top-0 z-40 backdrop-blur-lg ">
+      <div className="flex items-center justify-between h-full">
+        {/* logo */}
+        <div className="flex items-center gap-8">
+          <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-all">
+            <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
+              <MessageSquare className="w-5 h-5 text-primary"/>
+            </div>
+            <h1 className="text-lg font-bold">Chatty</h1>
+          </Link>
         </div>
-        <ul
-          tabIndex={0}
-          className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-          <li><a>Item 1</a></li>
-          <li>item2
-          </li>
-          <li><a>Item 3</a></li>
-        </ul>
-      </div>
-      <a className="btn btn-ghost text-xl">daisyUI</a>
-    </div>
-    <div className="navbar-center hidden lg:flex">
-      <ul className="menu menu-horizontal px-1">
-        <li><a>Home</a></li>
-        <li>
-            iteme2
-        </li>
-        <li><a>Item 3</a></li>
-      </ul>
-    </div>
-    <div className="navbar-end">
-      <a className="btn">Button</a>
-    </div>
-  </div>
+
+        {/* links */}
+        <div className="flex items-center gap-2">
+          {/*settings link*/}
+          <Link to="/settings" className="btn btn-sm transition-colors">
+            <Settings className="w-4 h-4 "/>
+            <span className="hidden sm:inline">Settings</span>
+          </Link>
+          {/*Profile link*/}
+          {authUser && <>
+              <Link to="/profile" className="btn btn-sm gap-2">
+                <User className="size-5"/>
+                <span className="hidden sm:inline">{authUser?.user?.fullname}</span>
+              </Link>
+
+              <button onClick={logout} className="btn btn-sm gap-2">
+                <LogOut className="size-5"/>
+                <span className="hidden sm:inline">Logout</span>
+              </button>
+            </>
+          }
+        </div>
+      </div>  
+    </header>
   )
 }
 
