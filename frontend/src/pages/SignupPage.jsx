@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare,User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AuthImagePattern from '../components/AuthImagePattern';
+import toast from 'react-hot-toast';
 
 function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,14 +15,11 @@ function SignupPage() {
   const {signup, isSigningUp} = useAuthStore();
 
   const validateForm = () => {
-    if (!formData.fullname || !formData.email || !formData.password) {
-      alert("Please fill all the fields");
-      return false;
-    }
-    if (formData.password.length < 6) {
-      alert("Password must be at least 6 characters long");
-      return false;
-    }
+    if(!formData.fullname)return toast.error("Please enter your fullname");
+    if(!formData.email)return toast.error("Please enter your email");
+    if(!/\S+@\S+\.\S+/.test(formData.email))return toast.error("Please enter a valid email");
+    if(!formData.password)return toast.error("Please enter your password");
+    if(formData.password.length < 6)return toast.error("Password must be at least 6 characters");
     return true;
   };
 
@@ -53,7 +51,7 @@ function SignupPage() {
           <form className="space-y-6" onSubmit={handleSignup}>
             <div className='form-control'>
               <label htmlFor="fullname" className="label">
-                <span className="label-text font-medium">Full Name</span>
+                <span className="label-text font-medium">Fullname</span>
               </label>
               <div className='relative'>
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
