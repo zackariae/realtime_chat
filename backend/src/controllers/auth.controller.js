@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { generateToken } from "../lib/utils.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async (req, res) => {
     const { fullname, email, password } = req.body;
@@ -76,6 +77,7 @@ export const logout = (req, res) => {
 
 export const updateProfile =async (req, res) => {
     try {
+
         const { profilePic } = req.body;
         if(!profilePic){
             return res.status(400).json({message: "Profile picture is required"});
@@ -98,8 +100,8 @@ export const updateProfile =async (req, res) => {
         })
         
     } catch (error) {
-        console.log("error in update ctr", error.message);
-        return res.status(500).json({message: "Internal Server Error"});
+        console.error("Error in updateProfile:", error); // Log full error object
+        return res.status(500).json({ message: error.message || "Internal Server Error" });
     }
 }
 
