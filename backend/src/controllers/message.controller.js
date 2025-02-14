@@ -34,32 +34,39 @@ export const getMessages = async (req, res) => {
 }
 export const sendMessage = async (req, res) => {
     try {
-        const { id:userToChatId } = req.params;
+        const { id:receiverId } = req.params;
         const { text, image } = req.body;
-        const myId = req.user._id;
+        const senderId = req.user._id;
 
         if(!text && !image){
             return res.status(400).json({message: "Message is required"});
         }
+        let imageUrl="";
         if(image){
             const uploadedPic = await cloudinary.uploader.upload(image);
             if(!uploadedPic){
                 return res.status(400).json({message: "Image could not be uploaded"});
             }
-            image = uploadedPic.secure_url;
+            imageUrl = uploadedPic.secure_url;
         }
 
-        const message = await Message.create({
-            senderId: myId, 
-            receiverId: userToChatId, 
-            text, 
-            image});
-        
-        //todo: realtime functionality here : socket.io
-        return res.status(200).json({message});
-        
-    } catch (error) {
-        console.log("error in sendMessage ctr", error.message);
-        return res.status(500).json({message: "Internal Server Error"});
-    }
-}
+        const newMessage = new Message({
+            senderId,
+            receiverId,
+            text,
+            image: imageUrl,
+          });
+      
+          await newMessage.save();
+      
+        //   const receiverSocketId = getReceiverSocketId(receiverId);
+        //   if (receiverSocketId) {
+        //     io.to(receiverSocketId).emit("newMessage", newMessage);
+        //   }
+      
+          res.status(201).json(newMessage);
+        } catch (error) {
+          console.log("Error in sendMessage controller: ", error.message);
+          res.status(500).json({ error: "Internal server error" });
+        }
+      };
