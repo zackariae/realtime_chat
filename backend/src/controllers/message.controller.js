@@ -23,8 +23,8 @@ export const getMessages = async (req, res) => {
         const messages = await Message.find({$or: [
             {senderId: myId, receiverId: userToChatId},
             {senderId: userToChatId, receiverId: myId}]})
-            .populate("senderId", "fullname profilePic")
-            .populate("receiverId", "fullname profilePic");
+            // .populate("senderId", "fullname profilePic")
+            // .populate("receiverId", "fullname profilePic");
 
         return res.status(200).json({messages});
     } catch (error) {
