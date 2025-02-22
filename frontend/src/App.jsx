@@ -13,11 +13,12 @@ import { useThemeStore } from "./store/useThemeStore.js"
 function App() {
   const {authUser, checkAuth, isCheckingAuth} = useAuthStore();
   const {theme} = useThemeStore();
+
+
   useEffect(() => {
     checkAuth();
   },[checkAuth])
 
-  console.log("authUser form App.jsx ",authUser);
 
   if(isCheckingAuth && !authUser){
    return(
