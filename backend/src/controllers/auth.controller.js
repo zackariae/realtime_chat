@@ -1,7 +1,6 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
-import jwt from "jsonwebtoken";
 import { generateToken } from "../lib/utils.js";
 import cloudinary from "../lib/cloudinary.js";
 
@@ -112,7 +111,6 @@ export const checkAuth = async (req, res) => {
         res.status(200)
         .json({user: req.user})
     } catch (error) {
-        console.log("error in checkAuth ctr", error.message);
         return res.status(500).json({message: "Internal Server Error"});
     }
 }
